@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestor de Enlaces con QR</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-center">Mis Enlaces con QR</h1>
+    <div id="link-container" class="space-y-6"></div>
+  </div>
+
+  <script>
+    const enlaces = [
+      { titulo: "Google", url: "https://www.google.com" },
+      { titulo: "YouTube", url: "https://www.youtube.com" },
+      { titulo: "GitHub", url: "https://github.com" },
+    ];
+
+    const contenedor = document.getElementById("link-container");
+
+    enlaces.forEach((enlace, index) => {
+      const card = document.createElement("div");
+      card.className = "bg-white p-4 rounded-xl shadow-md flex items-center justify-between";
+
+      const info = document.createElement("div");
+      info.className = "flex flex-col";
+
+      const titulo = document.createElement("h2");
+      titulo.className = "text-xl font-semibold";
+      titulo.textContent = enlace.titulo;
+
+      const link = document.createElement("a");
+      link.href = enlace.url;
+      link.textContent = "Visitar enlace";
+      link.className = "text-blue-600 hover:underline mt-1";
+      link.target = "_blank";
+
+      info.appendChild(titulo);
+      info.appendChild(link);
+
+      const qrCanvas = document.createElement("canvas");
+      QRCode.toCanvas(qrCanvas, enlace.url, { width: 100 }, (error) => {
+        if (error) console.error(error);
+      });
+
+      card.appendChild(info);
+      card.appendChild(qrCanvas);
+      contenedor.appendChild(card);
+    });
+  </script>
+</body>
+</html>
